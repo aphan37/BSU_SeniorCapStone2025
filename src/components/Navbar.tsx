@@ -1,11 +1,11 @@
 
-import { Search, User, LogOut } from "lucide-react";
+import { User, LogOut } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
 import { useIsMobile } from "@/hooks/use-mobile";
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useAuth } from "@/contexts/AuthContext";
+import SearchBar from "@/components/SearchBar";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -43,15 +43,10 @@ const Navbar = () => {
         
         {isSearchOpen && !isMobile ? (
           <div className="flex-1 mx-6">
-            <div className="relative">
-              <Input 
-                placeholder="Search for products..." 
-                className="pl-8 w-full"
-                autoFocus
-                onBlur={() => setIsSearchOpen(false)}
-              />
-              <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />
-            </div>
+            <SearchBar 
+              onClose={() => setIsSearchOpen(false)}
+              autoFocus={true}
+            />
           </div>
         ) : (
           <div className="hidden md:flex items-center space-x-6">
@@ -68,7 +63,6 @@ const Navbar = () => {
               size="icon"
               onClick={() => setIsSearchOpen(true)}
             >
-              <Search className="h-5 w-5" />
               <span className="sr-only">Search</span>
             </Button>
           )}

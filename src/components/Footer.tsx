@@ -51,7 +51,7 @@ const Footer = () => {
             &copy; {currentYear} BSU Tech Deals. All rights reserved.
           </p>
           <p className="text-gray-400 text-sm flex items-center mt-4 md:mt-0">
-            Made with <Heart className="h-4 w-4 mx-1 text-red-500" /> for BSU Students
+            <Heart className="h-4 w-4 mx-1 text-red-500" /> <span className="font-bold">Deals for BOLD students</span>
           </p>
         </div>
       </div>
