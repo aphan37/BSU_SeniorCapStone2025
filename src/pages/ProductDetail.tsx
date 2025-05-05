@@ -1,12 +1,14 @@
 
 import { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
-import { Star, ChevronLeft, Check } from "lucide-react";
-import { getProductById, Product } from "@/data/productsData";
+import { Star, ChevronLeft } from "lucide-react";
+import { Product } from "@/data/productsData";
 import { Button } from "@/components/ui/button";
 import { useToast } from "@/hooks/use-toast";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
+import ProductDiscountSection from "@/components/product/ProductDiscountSection";
+import { fetchProductById } from "@/services/productService";
 
 const ProductDetail = () => {
   const { id } = useParams<{ id: string }>();
@@ -16,15 +18,20 @@ const ProductDetail = () => {
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-    // Simulate loading
-    setIsLoading(true);
-    setTimeout(() => {
+    const loadProduct = async () => {
+      setIsLoading(true);
       if (id) {
-        const foundProduct = getProductById(id);
-        setProduct(foundProduct);
+        try {
+          const fetchedProduct = await fetchProductById(id);
+          setProduct(fetchedProduct || undefined);
+        } catch (error) {
+          console.error("Error fetching product:", error);
+        }
       }
       setIsLoading(false);
-    }, 500);
+    };
+    
+    loadProduct();
   }, [id]);
 
   const handleGoBack = () => {
@@ -128,7 +135,7 @@ const ProductDetail = () => {
                 <ul className="space-y-2">
                   {product.features.map((feature, index) => (
                     <li key={index} className="flex items-start">
-                      <Check className="h-5 w-5 text-green-500 mr-2 shrink-0 mt-0.5" />
+                      <span className="text-green-500 mr-2">•</span>
                       <span>{feature}</span>
                     </li>
                   ))}
@@ -148,16 +155,10 @@ const ProductDetail = () => {
                 </Button>
               </div>
 
-              <div className="mt-6 bg-gray-50 p-4 rounded-lg border text-sm">
-                <p className="font-medium mb-1">BSU Student Deal</p>
-                <p className="text-muted-foreground">
-                  This deal is exclusively available for Bowie State University students. 
-                  <a href="#" className="text-bsu-gold hover:underline ml-1">
-                    Verify your student status
-                  </a> 
-                  to access this special pricing.
-                </p>
-              </div>
+              <ProductDiscountSection 
+                productId={product.id}
+                productName={product.name}
+              />
             </div>
           </div>
         </div>

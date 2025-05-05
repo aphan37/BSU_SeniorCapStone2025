@@ -1,14 +1,33 @@
 
-import { Search } from "lucide-react";
+import { Search, User, LogOut } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { useIsMobile } from "@/hooks/use-mobile";
 import { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { useAuth } from "@/contexts/AuthContext";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
 
 const Navbar = () => {
   const isMobile = useIsMobile();
   const [isSearchOpen, setIsSearchOpen] = useState(false);
+  const { user, studentProfile, isVerified, signOut } = useAuth();
+  const navigate = useNavigate();
+
+  const handleVerifyClick = () => {
+    if (user) {
+      navigate("/profile");
+    } else {
+      navigate("/sign-in");
+    }
+  };
 
   return (
     <header className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
@@ -53,9 +72,36 @@ const Navbar = () => {
               <span className="sr-only">Search</span>
             </Button>
           )}
-          <Button className="bg-bsu-gold hover:bg-bsu-gold/90 text-black">
-            {isMobile ? "Verify" : "Student Verify"}
-          </Button>
+          
+          {user ? (
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <Button variant="ghost" className="relative">
+                  <User className="h-5 w-5" />
+                  {isVerified && <span className="absolute top-0 right-0 h-2 w-2 rounded-full bg-green-500" />}
+                  {!isMobile && <span className="ml-2">{studentProfile?.first_name || 'Account'}</span>}
+                </Button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent align="end">
+                <DropdownMenuLabel>My Account</DropdownMenuLabel>
+                <DropdownMenuSeparator />
+                <DropdownMenuItem onClick={() => navigate("/profile")}>Profile</DropdownMenuItem>
+                <DropdownMenuItem onClick={() => navigate("/my-codes")}>My Discount Codes</DropdownMenuItem>
+                <DropdownMenuSeparator />
+                <DropdownMenuItem onClick={() => signOut()}>
+                  <LogOut className="mr-2 h-4 w-4" />
+                  <span>Sign Out</span>
+                </DropdownMenuItem>
+              </DropdownMenuContent>
+            </DropdownMenu>
+          ) : (
+            <Button 
+              className="bg-bsu-gold hover:bg-bsu-gold/90 text-black"
+              onClick={handleVerifyClick}
+            >
+              {isMobile ? "Sign In" : "Student Sign In"}
+            </Button>
+          )}
         </div>
       </div>
     </header>
