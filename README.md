@@ -1,73 +1,42 @@
-# Welcome to your Lovable project
+# BSU Senior Capstone 2025 – Tech Discount Recommender
 
-## Project info
+## Project Overview
 
-**URL**: https://lovable.dev/projects/2769a5bd-e0a6-4a6b-8c7a-68a5e4ecedf7
+The **BSU Tech Discount Recommender** is a full-stack web application built for Bowie State University students. It allows students to browse and discover exclusive tech deals from major retailers like Amazon, Best Buy, Walmart, and Target, tailored to their preferences.
 
-## How can I edit this code?
+The project serves as a capstone demonstration of web development, secure authentication, API integration, and real-time data rendering — emphasizing accessibility, personalization, and performance.
 
-There are several ways of editing your application.
+---
 
-**Use Lovable**
+## Objectives
 
-Simply visit the [Lovable Project](https://lovable.dev/projects/2769a5bd-e0a6-4a6b-8c7a-68a5e4ecedf7) and start prompting.
+- Allow authenticated Bowie students to access exclusive tech product deals.
+- Fetch and display product information dynamically from a Supabase database.
+- Provide a personalized recommendation feed based on user preferences.
+- Offer a clean, responsive user interface optimized for desktop and mobile.
 
-Changes made via Lovable will be committed automatically to this repo.
+---
 
-**Use your preferred IDE**
+## Core Features
 
-If you want to work locally using your own IDE, you can clone this repo and push changes. Pushed changes will also be reflected in Lovable.
+- 🔐 **Email-authenticated login** (Bowie student emails only)
+- 🛍️ **Real-time product display** from Supabase
+- 🎯 **Recommendation engine** based on user behavior or preferences
+- 💾 **Secure backend** powered by Supabase (PostgreSQL)
+- 🖼️ **Product cards** with price, image, description, and vendor links
+- 📱 **Responsive UI** with clean Tailwind CSS layout
 
-The only requirement is having Node.js & npm installed - [install with nvm](https://github.com/nvm-sh/nvm#installing-and-updating)
+---
 
-Follow these steps:
+## Tech Stack
 
-```sh
-# Step 1: Clone the repository using the project's Git URL.
-git clone <YOUR_GIT_URL>
+| Layer         | Technology                       |
+|--------------|----------------------------------|
+| Frontend      | HTML, CSS, JavaScript, Tailwind CSS |
+| Backend       | Supabase (PostgreSQL + REST API) |
+| Auth          | Supabase Auth with domain validation |
+| Hosting       | GitHub Pages / Vercel / Netlify |
+| Version Control | Git + GitHub                   |
 
-# Step 2: Navigate to the project directory.
-cd <YOUR_PROJECT_NAME>
-
-# Step 3: Install the necessary dependencies.
-npm i
-
-# Step 4: Start the development server with auto-reloading and an instant preview.
-npm run dev
-```
-
-**Edit a file directly in GitHub**
-
-- Navigate to the desired file(s).
-- Click the "Edit" button (pencil icon) at the top right of the file view.
-- Make your changes and commit the changes.
-
-**Use GitHub Codespaces**
-
-- Navigate to the main page of your repository.
-- Click on the "Code" button (green button) near the top right.
-- Select the "Codespaces" tab.
-- Click on "New codespace" to launch a new Codespace environment.
-- Edit files directly within the Codespace and commit and push your changes once you're done.
-
-## What technologies are used for this project?
-
-This project is built with:
-
-- Vite
-- TypeScript
-- React
-- shadcn-ui
-- Tailwind CSS
-
-## How can I deploy this project?
-
-Simply open [Lovable](https://lovable.dev/projects/2769a5bd-e0a6-4a6b-8c7a-68a5e4ecedf7) and click on Share -> Publish.
-
-## Can I connect a custom domain to my Lovable project?
-
-Yes, you can!
-
-To connect a domain, navigate to Project > Settings > Domains and click Connect Domain.
-
-Read more here: [Setting up a custom domain](https://docs.lovable.dev/tips-tricks/custom-domain#step-by-step-guide)
+---
+Made by Anh Phan
