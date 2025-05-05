@@ -4,6 +4,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { useIsMobile } from "@/hooks/use-mobile";
 import { useState } from "react";
+import { Link } from "react-router-dom";
 
 const Navbar = () => {
   const isMobile = useIsMobile();
@@ -13,12 +14,12 @@ const Navbar = () => {
     <header className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
       <div className="container flex h-16 items-center justify-between">
         <div className="flex items-center gap-2">
-          <a href="/" className="flex items-center gap-2">
+          <Link to="/" className="flex items-center gap-2">
             <div className="bg-bsu-gold p-1.5 rounded">
               <span className="font-bold text-black text-xl">BSU</span>
             </div>
             {!isMobile && <span className="font-bold text-xl">Tech Deals</span>}
-          </a>
+          </Link>
         </div>
         
         {isSearchOpen && !isMobile ? (
@@ -35,10 +36,9 @@ const Navbar = () => {
           </div>
         ) : (
           <div className="hidden md:flex items-center space-x-6">
-            <a href="/" className="font-medium hover:text-bsu-gold">Home</a>
-            <a href="/products" className="font-medium hover:text-bsu-gold">Products</a>
-            <a href="/categories" className="font-medium hover:text-bsu-gold">Categories</a>
-            <a href="/about" className="font-medium hover:text-bsu-gold">About</a>
+            <Link to="/" className="font-medium hover:text-bsu-gold">Home</Link>
+            <Link to="/products" className="font-medium hover:text-bsu-gold">Products</Link>
+            <Link to="/about" className="font-medium hover:text-bsu-gold">About</Link>
           </div>
         )}
         
