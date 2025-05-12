@@ -9,6 +9,7 @@ import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import ProductDiscountSection from "@/components/product/ProductDiscountSection";
 import { fetchProductById } from "@/services/productService";
+import { useAuth } from "@/contexts/AuthContext";
 
 const ProductDetail = () => {
   const { id } = useParams<{ id: string }>();
@@ -16,6 +17,7 @@ const ProductDetail = () => {
   const { toast } = useToast();
   const [product, setProduct] = useState<Product | undefined>(undefined);
   const [isLoading, setIsLoading] = useState(true);
+  const { user, isLoading: authLoading } = useAuth();
 
   useEffect(() => {
     const loadProduct = async () => {
@@ -45,7 +47,26 @@ const ProductDetail = () => {
     });
   };
 
-  if (isLoading) {
+  const handleCheckout = () => {
+    if (!user) {
+      toast({
+        title: "Authentication Required",
+        description: "Please sign in with your BSU student account to checkout.",
+        variant: "destructive",
+      });
+      navigate("/sign-in");
+      return;
+    }
+    
+    toast({
+      title: "Proceeding to Checkout",
+      description: "Taking you to the checkout page.",
+    });
+    // In a real app, you would navigate to a checkout page
+    // navigate("/checkout");
+  };
+
+  if (isLoading || authLoading) {
     return (
       <div className="min-h-screen flex flex-col">
         <Navbar />
@@ -150,8 +171,14 @@ const ProductDetail = () => {
                 >
                   Add to Cart
                 </Button>
-                <Button size="lg" variant="outline" className="flex-1">
-                  Save for Later
+                <Button 
+                  size="lg" 
+                  variant="default" 
+                  className="flex-1"
+                  onClick={handleCheckout}
+                  disabled={!user}
+                >
+                  {user ? "Checkout Now" : "Sign In to Checkout"}
                 </Button>
               </div>
 
