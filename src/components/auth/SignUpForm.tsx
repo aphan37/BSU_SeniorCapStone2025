@@ -51,8 +51,16 @@ const SignUpForm = () => {
       return;
     }
 
-    if (!email.endsWith("@bowiestate.edu")) {
-      setError("Please use your Bowie State University email address");
+    // Updated email validation to accept both domains
+    if (!email.endsWith("@bowiestate.edu") && !email.endsWith("@students.bowiestate.edu")) {
+      setError("Please use your Bowie State University email address (@bowiestate.edu or @students.bowiestate.edu)");
+      setIsLoading(false);
+      return;
+    }
+
+    // Validate student ID to be exactly 7 digits
+    if (!/^\d{7}$/.test(studentId)) {
+      setError("Student ID must be exactly 7 digits");
       setIsLoading(false);
       return;
     }
@@ -119,7 +127,7 @@ const SignUpForm = () => {
               id="email"
               name="email"
               type="email"
-              placeholder="student@bowiestate.edu"
+              placeholder="student@students.bowiestate.edu"
               value={formData.email}
               onChange={handleChange}
               required
@@ -131,7 +139,7 @@ const SignUpForm = () => {
             <Input
               id="studentId"
               name="studentId"
-              placeholder="e.g. B00123456"
+              placeholder="e.g. 1234567"
               value={formData.studentId}
               onChange={handleChange}
               required

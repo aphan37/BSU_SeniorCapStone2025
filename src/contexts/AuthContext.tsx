@@ -113,14 +113,24 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   };
   
   const signUp = async (email: string, password: string, studentId: string, firstName: string, lastName: string) => {
-    // Validate BSU email
-    if (!email.endsWith('@bowiestate.edu')) {
+    // Validate BSU email - updated to accept both domains
+    if (!email.endsWith('@bowiestate.edu') && !email.endsWith('@students.bowiestate.edu')) {
       toast({
         title: "Invalid Email",
-        description: "Please use your Bowie State University email address.",
+        description: "Please use your Bowie State University email address (@bowiestate.edu or @students.bowiestate.edu).",
         variant: "destructive",
       });
       return { error: new Error("Invalid email domain") };
+    }
+    
+    // Validate student ID format - 7 digits
+    if (!/^\d{7}$/.test(studentId)) {
+      toast({
+        title: "Invalid Student ID",
+        description: "Student ID must be exactly 7 digits.",
+        variant: "destructive",
+      });
+      return { error: new Error("Invalid student ID format") };
     }
     
     const { data, error } = await supabase.auth.signUp({ 

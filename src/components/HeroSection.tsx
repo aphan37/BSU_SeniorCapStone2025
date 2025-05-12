@@ -26,7 +26,7 @@ const HeroSection = () => {
             <Button size="lg" className="bg-bsu-gold hover:bg-bsu-gold/90 text-black">
               Browse All Deals
             </Button>
-            <Button size="lg" variant="outline" className="border-white text-white hover:bg-white/20">
+            <Button size="lg" className="bg-bsu-gold hover:bg-bsu-gold/90 text-black">
               How It Works <ChevronRight className="ml-1 h-4 w-4" />
             </Button>
           </div>
