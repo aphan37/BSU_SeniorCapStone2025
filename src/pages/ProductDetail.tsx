@@ -25,7 +25,12 @@ const ProductDetail = () => {
       if (id) {
         try {
           const fetchedProduct = await fetchProductById(id);
-          setProduct(fetchedProduct || undefined);
+          if (fetchedProduct) {
+            setProduct(fetchedProduct);
+            console.log("Product loaded successfully:", fetchedProduct);
+          } else {
+            console.error("Product not found for id:", id);
+          }
         } catch (error) {
           console.error("Error fetching product:", error);
         }

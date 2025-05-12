@@ -22,9 +22,14 @@ const ProductInventoryPage = () => {
       if (id) {
         try {
           const fetchedProduct = await fetchProductById(id);
-          setProduct(fetchedProduct || undefined);
+          if (fetchedProduct) {
+            setProduct(fetchedProduct);
+            console.log("Inventory: Product loaded successfully:", fetchedProduct);
+          } else {
+            console.error("Inventory: Product not found for id:", id);
+          }
         } catch (error) {
-          console.error("Error fetching product:", error);
+          console.error("Error fetching product for inventory:", error);
         }
       }
       setIsLoading(false);

@@ -1,6 +1,6 @@
 
 import { supabase, ProductDB, CategoryDB } from '@/lib/supabase';
-import { Product, Category } from '@/data/productsData';
+import { Product, Category, getProductById as getProductByIdLocal } from '@/data/productsData';
 
 // Convert database product to frontend product
 export const mapDbProductToProduct = (dbProduct: ProductDB): Product => ({
@@ -33,74 +33,119 @@ export const mapDbCategoryToCategory = (dbCategory: CategoryDB): Category => ({
 
 // Get all products from Supabase
 export const fetchProducts = async (): Promise<Product[]> => {
-  const { data, error } = await supabase
-    .from('products')
-    .select('*');
+  try {
+    const { data, error } = await supabase
+      .from('products')
+      .select('*');
+      
+    if (error) {
+      console.error('Error fetching products:', error);
+      // Fallback to local data if Supabase fails
+      return [];
+    }
     
-  if (error) {
-    console.error('Error fetching products:', error);
-    throw error;
+    if (data && data.length > 0) {
+      return data.map(mapDbProductToProduct);
+    }
+    
+    // If no data from Supabase, use local data
+    return [];
+  } catch (error) {
+    console.error('Exception fetching products:', error);
+    return [];
   }
-  
-  return data.map(mapDbProductToProduct);
 };
 
 // Get featured products from Supabase
 export const fetchFeaturedProducts = async (): Promise<Product[]> => {
-  const { data, error } = await supabase
-    .from('products')
-    .select('*')
-    .eq('is_featured', true);
+  try {
+    const { data, error } = await supabase
+      .from('products')
+      .select('*')
+      .eq('is_featured', true);
+      
+    if (error) {
+      console.error('Error fetching featured products:', error);
+      return [];
+    }
     
-  if (error) {
-    console.error('Error fetching featured products:', error);
-    throw error;
+    if (data && data.length > 0) {
+      return data.map(mapDbProductToProduct);
+    }
+    
+    // If no data from Supabase, use local data
+    return [];
+  } catch (error) {
+    console.error('Exception fetching featured products:', error);
+    return [];
   }
-  
-  return data.map(mapDbProductToProduct);
 };
 
 // Get products by category from Supabase
 export const fetchProductsByCategory = async (category: string): Promise<Product[]> => {
-  const { data, error } = await supabase
-    .from('products')
-    .select('*')
-    .eq('category', category);
+  try {
+    const { data, error } = await supabase
+      .from('products')
+      .select('*')
+      .eq('category', category);
+      
+    if (error) {
+      console.error('Error fetching products by category:', error);
+      return [];
+    }
     
-  if (error) {
-    console.error('Error fetching products by category:', error);
-    throw error;
+    if (data && data.length > 0) {
+      return data.map(mapDbProductToProduct);
+    }
+    
+    // If no data from Supabase, use local data
+    return [];
+  } catch (error) {
+    console.error('Exception fetching products by category:', error);
+    return [];
   }
-  
-  return data.map(mapDbProductToProduct);
 };
 
-// Get product by ID from Supabase
+// Get product by ID from Supabase or local data
 export const fetchProductById = async (id: string): Promise<Product | null> => {
-  const { data, error } = await supabase
-    .from('products')
-    .select('*')
-    .eq('id', id)
-    .single();
+  try {
+    const { data, error } = await supabase
+      .from('products')
+      .select('*')
+      .eq('id', id)
+      .single();
+      
+    if (error) {
+      console.error('Error fetching product by ID from Supabase:', error);
+      // Fall back to local data
+      const localProduct = getProductByIdLocal(id);
+      return localProduct || null;
+    }
     
-  if (error) {
-    console.error('Error fetching product by ID:', error);
-    return null;
+    return data ? mapDbProductToProduct(data) : getProductByIdLocal(id) || null;
+  } catch (error) {
+    console.error('Exception fetching product by ID:', error);
+    // Fall back to local data
+    const localProduct = getProductByIdLocal(id);
+    return localProduct || null;
   }
-  
-  return mapDbProductToProduct(data);
 };
 
 // Get all categories from Supabase
 export const fetchCategories = async (): Promise<Category[]> => {
-  const { data, error } = await supabase
-    .from('categories')
-    .select('*');
+  try {
+    const { data, error } = await supabase
+      .from('categories')
+      .select('*');
+      
+    if (error) {
+      console.error('Error fetching categories:', error);
+      return [];
+    }
     
-  if (error) {
-    console.error('Error fetching categories:', error);
-    throw error;
+    return data ? data.map(mapDbCategoryToCategory) : [];
+  } catch (error) {
+    console.error('Exception fetching categories:', error);
+    return [];
   }
-  
-  return data.map(mapDbCategoryToCategory);
 };
